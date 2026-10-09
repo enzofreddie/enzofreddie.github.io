@@ -1,6 +1,6 @@
-/* Chidinma Agu · Web Studio: service worker for offline use.
+/* Dynamic Digital Studio: service worker for offline use.
    Bump CACHE_VERSION whenever you change any file listed in ASSETS. */
-const CACHE_VERSION = 'ca-studio-v2';
+const CACHE_VERSION = 'dd-studio-v3';
 const ASSETS = [
   '/',
   '/index.html',

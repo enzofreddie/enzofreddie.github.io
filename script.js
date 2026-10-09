@@ -1,4 +1,4 @@
-// Chidinma Agu · Web Studio: small, dependency-free enhancements
+// Dynamic Digital Studio: small, dependency-free enhancements
 (function () {
   document.documentElement.classList.add('js');
 
