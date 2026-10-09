@@ -1,6 +1,6 @@
 /* Chidinma Agu · Web Studio: service worker for offline use.
    Bump CACHE_VERSION whenever you change any file listed in ASSETS. */
-const CACHE_VERSION = 'ca-studio-v1';
+const CACHE_VERSION = 'ca-studio-v2';
 const ASSETS = [
   '/',
   '/index.html',
