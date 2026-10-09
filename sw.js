@@ -1,6 +1,6 @@
 /* Dynamic Digital Studio: service worker for offline use.
    Bump CACHE_VERSION whenever you change any file listed in ASSETS. */
-const CACHE_VERSION = 'dd-studio-v3';
+const CACHE_VERSION = 'dd-studio-v4';
 const ASSETS = [
   '/',
   '/index.html',
