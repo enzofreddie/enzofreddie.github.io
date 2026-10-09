@@ -41,4 +41,13 @@
   // Footer year
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
+
+  // PWA: register the service worker (needs https or localhost; skipped on file://)
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function (err) {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
 })();
