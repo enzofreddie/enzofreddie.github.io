@@ -1,0 +1,54 @@
+name: Site checks
+# Proposed CI for enzofreddie/enzofreddie.github.io (plain HTML/CSS/JS PWA).
+# Copy .github/workflows/site-checks.yml and scripts/check-cache-version.sh into the repo root.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  html-validate:
+    name: HTML validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Validate HTML (html-validate)
+        run: |
+          [ -f .htmlvalidate.json ] || echo '{"extends":["html-validate:recommended"],"rules":{"no-inline-style":"off","long-title":"off","doctype-style":"off"}}' > .htmlvalidate.json
+          npx --yes html-validate@8 $(git ls-files '*.html')
+
+  link-check:
+    name: Link check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check links (lychee)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # Offline-resolved internal links + external links; tel:/mailto:/wa.me excluded (rate-limited / not HTTP).
+          args: >-
+            --no-progress --root-dir "${{ github.workspace }}"
+            --exclude-mail --exclude '^tel:' --exclude 'wa\.me' --exclude 'linkedin\.com'
+            --max-retries 2 --accept '200..=299,403,429'
+            './**/*.html' sitemap.xml
+          fail: true
+
+  cache-version:
+    name: Service worker CACHE_VERSION bumped
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Check CACHE_VERSION
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="origin/${{ github.base_ref }}"
+          else
+            BASE="${{ github.event.before }}"
+            if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then BASE="HEAD~1"; fi
+          fi
+          bash scripts/check-cache-version.sh "$BASE" HEAD
