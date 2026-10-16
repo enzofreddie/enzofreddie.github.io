@@ -32,7 +32,7 @@ jobs:
           # Offline-resolved internal links + external links; tel:/mailto:/wa.me excluded (rate-limited / not HTTP).
           args: >-
             --no-progress --root-dir "${{ github.workspace }}"
-            --exclude-mail --exclude '^tel:' --exclude 'wa\.me' --exclude 'linkedin\.com'
+ --exclude '^tel:' --exclude 'wa\.me' --exclude 'linkedin\.com'
             --max-retries 2 --accept '200..=299,403,429'
             './**/*.html' sitemap.xml
           fail: true
